@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据查询</title>
+    <style>
+        /* 添加一些基本样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .output-group {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>温湿度光照数据查询 (Temperature, humidity and light data searching system)</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="input_digits">请输入要查询的日期时间 (Please enter the date and time you want to search)：</label>
+                <input type="text" id="input_digits" name="input_digits" required>
+            </div>
+            <div class="button-container">
+                <button type="submit" class="btn">查询 (search)</button>
+            </div>
+        </form>
+
+        {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+
+        {% if success_message %}
+        <div class="modal" id="myModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p>{{ success_message }}</p>
+                <button onclick="closeModal()">关闭 (close)</button>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="output-group">
+            <h3>输出结果</h3>
+            <p>日期时间 (Date and Time): {{ datetime }}</p>
+            <p>A: {{ a }}</p>
+            <p>B: {{ b }}</p>
+            <p>C: {{ c }}</p>
+        </div>
+    </div>
+
+    <script>
+        // 弹窗自动显示
+        window.onload = function() {
+            if ({{ success_message | default(false) }}) {
+                document.getElementById('myModal').style.display = 'block';
+            }
+        };
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
